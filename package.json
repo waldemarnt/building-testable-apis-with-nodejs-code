@@ -6,7 +6,8 @@
   "scripts": {
     "start": "babel-node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js"
+    "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
+    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "babel-preset-node6": "^11.0.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "sinon": "^1.17.6",
     "supertest": "^2.0.1"
   },
   "dependencies": {
