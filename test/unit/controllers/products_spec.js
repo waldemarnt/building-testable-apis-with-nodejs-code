@@ -10,14 +10,16 @@ describe('Routes: Products', () => {
 
   describe('get() products', () => {
     it('should return a list of products', () => {
-      const fakeReq = {};
-      const fakeRes = {
+      const request = {};
+      const response = {
         send: sinon.spy()
-      }
+      };
+
       const productsController = new ProductsController();
-      productsController.get(fakeReq, fakeRes);
-      expect(fakeRes.send.called).to.be.true;
-      expect(fakeRes.send.calledWith(defaultProduct)).to.be.true;
+      productsController.get(request, response);
+
+      expect(response.send.called).to.be.true;
+      expect(response.send.calledWith(defaultProduct)).to.be.true;
     });
   });
 });
