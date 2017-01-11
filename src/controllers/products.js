@@ -1,4 +1,5 @@
 class ProductsController {
+
   get(req, res) {
     return res.send([{
       name: 'Default product',
@@ -7,4 +8,5 @@ class ProductsController {
     }])
   }
 }
+
 export default ProductsController;
