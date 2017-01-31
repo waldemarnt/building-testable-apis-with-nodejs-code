@@ -2,7 +2,7 @@ describe('Routes: Products', () => {
   let request;
 
   before(() => {
-    return application()
+    return setupApp()
       .then(app => request = supertest(app))
       .catch(err => done(err));
   });
