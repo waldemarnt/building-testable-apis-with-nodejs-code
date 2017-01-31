@@ -1,4 +1,12 @@
 describe('Routes: Products', () => {
+  let request;
+
+  before(() => {
+    return application()
+      .then(app => request = supertest(app))
+      .catch(err => done(err));
+  });
+
   const defaultProduct = {
     name: 'Default product',
     description: 'product description',
