@@ -5,12 +5,11 @@ import database from './config/database'
 
 const app = express();
 
-export default () => {
-  return database.connect()
-  .then(() => {
-    app.use(bodyParser.json());
-    app.use('/', routes);
+const configureExpress = () => {
+  app.use(bodyParser.json());
+  app.use('/', routes);
 
-    return app;
-  });
-}
+  return app;
+};
+
+export default () => database.connect().then(configureExpress);
