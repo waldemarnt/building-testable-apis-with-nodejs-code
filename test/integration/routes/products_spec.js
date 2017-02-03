@@ -1,9 +1,11 @@
 describe('Routes: Products', () => {
   let request;
 
-  before(() => {
+  before(()=> {
     return setupApp()
-      .then(app => request = supertest(app))
+      .then(app => {
+        request = supertest(app)
+      })
       .catch(err => done(err));
   });
 
