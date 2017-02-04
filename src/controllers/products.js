@@ -5,7 +5,7 @@ class ProductsController {
 
   get(req, res) {
     return this.Product.find({})
-      .then(users => res.send(users))
+      .then(products => res.send(products))
       .catch(err => res.status(400).send(err.message));
   }
 }
