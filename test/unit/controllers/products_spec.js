@@ -184,4 +184,62 @@ describe('Routes: Products', () => {
       })
     });
   });
+
+  describe('delete() product', () => {
+    it('should repond successfully when deleting a product', () => {
+      const fakeId = 'a-fake-id';
+      const request = {
+        params: {
+          id: fakeId
+        }
+      };
+      const response = {
+        sendStatus: sinon.spy()
+      };
+
+      class fakeProduct {
+        static remove() {}
+      }
+
+      const removeStub = sinon.stub(fakeProduct, 'remove');
+
+      removeStub.withArgs({ _id: fakeId }).resolves([1]);
+
+      const productsController = new ProductsController(fakeProduct);
+
+      return productsController.delete(request, response)
+      .then(() => {
+        sinon.assert.calledWith(response.sendStatus, 204);
+      });
+    });
+
+    it('should return 400 when an error occurs while deleting a product', () => {
+      const fakeId = 'a-fake-id';
+      const request = {
+        params: {
+          id: fakeId
+        }
+      };
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub()
+      };
+
+      class fakeProduct {
+        static remove() {}
+      }
+
+      const removeStub = sinon.stub(fakeProduct, 'remove');
+
+      removeStub.withArgs({ _id: fakeId }).rejects("Error");
+      response.status.withArgs(400).returns(response);
+
+      const productsController = new ProductsController(fakeProduct);
+
+      return productsController.delete(request, response)
+      .then(() => {
+        sinon.assert.calledWith(response.send, 'Error');
+      })
+    });
+  });
 });
