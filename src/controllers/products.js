@@ -22,13 +22,13 @@ class ProductsController {
 
     return product.save()
      .then(() => res.status(201).send(product))
-     .catch(err => res.status(400).send(err.message));
+     .catch(err => res.status(412).send(err.message));
   }
 
   update(req, res) {
     return this.Product.findOneAndUpdate({ _id: req.params.id}, req.body)
     .then(() => res.sendStatus(200))
-    .catch(err => res.status(400).send(err.message));
+    .catch(err => res.status(412).send(err.message));
   }
 
   delete(req, res) {
