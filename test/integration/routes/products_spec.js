@@ -6,7 +6,6 @@ describe('Routes: Products', () => {
       .then(app => {
         request = supertest(app)
       })
-      .catch(err => done(err));
   });
 
   const defaultProduct = {
