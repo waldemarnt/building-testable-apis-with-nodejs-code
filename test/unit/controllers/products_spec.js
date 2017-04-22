@@ -1,6 +1,5 @@
 import ProductsController from '../../../src/controllers/products';
 import sinon from 'sinon';
-import sinonAsPromised from 'sinon-as-promised';
 import Product from '../../../src/models/product';
 
 describe('Routes: Products', () => {
@@ -10,15 +9,18 @@ describe('Routes: Products', () => {
     price: 100
   }];
 
+  afterEach(() => {
+    Product.find.restore();
+  });
+
   describe('get() products', () => {
     it('should call send with a list of products', () => {
       const request = {};
       const response = {
         send: sinon.spy()
       };
-      Product.find = sinon.stub();
 
-      Product.find.withArgs({}).resolves(defaultProduct);
+      sinon.stub(Product, 'find').callsFake(() => Promise.resolve(defaultProduct));
 
       const productsController = new ProductsController(Product);
       productsController.get(request, response)
@@ -33,14 +35,13 @@ describe('Routes: Products', () => {
         send: sinon.spy(),
         status: sinon.spy()
       };
-      Product.find = sinon.stub();
 
-      Product.find.withArgs({}).rejects("Error");
+      sinon.stub(Product, 'find').callsFake(() => Promise.reject(new Error('Error')));
 
       const productsController = new ProductsController(Product);
       productsController.get(request, response)
       .then(() => {
-        sinon.assert.calledWith(response.status, 400);
+        sinon.assert.calledWith(response.send, 'Error');
       });
     });
   });
