@@ -20,6 +20,7 @@ describe('Constrollers: Products', () => {
       Product.find.withArgs({}).resolves(defaultProduct);
 
       const productsController = new ProductsController(Product);
+
       return productsController.get(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, defaultProduct);
