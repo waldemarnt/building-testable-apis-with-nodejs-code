@@ -1,6 +1,5 @@
 import ProductsController from '../../../src/controllers/products';
 import sinon from 'sinon';
-import sinonAsPromised from 'sinon-as-promised';
 import Product from '../../../src/models/product';
 
 describe('Constrollers: Products', () => {
@@ -28,7 +27,7 @@ describe('Constrollers: Products', () => {
     });
 
     it('should return 400 when an error occurs', () => {
-			const request = {};
+      const request = {};
       const response = {
         send: sinon.spy(),
         status: sinon.stub()
@@ -36,14 +35,14 @@ describe('Constrollers: Products', () => {
 
       response.status.withArgs(400).returns(response);
       Product.find = sinon.stub();
-      Product.find.withArgs({}).rejects("Error");
+      Product.find.withArgs({}).rejects({ message: 'Error' });
 
       const productsController = new ProductsController(Product);
 
       return productsController.get(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.send, 'Error');
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        });
     });
   });
 });
