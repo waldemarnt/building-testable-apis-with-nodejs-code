@@ -1,9 +1,8 @@
 import ProductsController from '../../../src/controllers/products';
 import sinon from 'sinon';
-import sinonAsPromised from 'sinon-as-promised';
 import Product from '../../../src/models/product';
 
-describe('Routes: Products', () => {
+describe('Constrollers: Products', () => {
   const defaultProduct = [{
     name: 'Default product',
     description: 'product description',
@@ -21,7 +20,8 @@ describe('Routes: Products', () => {
       Product.find.withArgs({}).resolves(defaultProduct);
 
       const productsController = new ProductsController(Product);
-      productsController.get(request, response)
+
+      return productsController.get(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, defaultProduct);
         });
@@ -31,17 +31,19 @@ describe('Routes: Products', () => {
       const request = {};
       const response = {
         send: sinon.spy(),
-        status: sinon.spy()
+        status: sinon.stub()
       };
-      Product.find = sinon.stub();
 
-      Product.find.withArgs({}).rejects("Error");
+      response.status.withArgs(400).returns(response);
+      Product.find = sinon.stub();
+      Product.find.withArgs({}).rejects({ message: 'Error' });
 
       const productsController = new ProductsController(Product);
-      productsController.get(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.status, 400);
-      });
+
+      return productsController.get(request, response)
+        .then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        });
     });
   });
 });
