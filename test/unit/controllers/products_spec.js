@@ -1,9 +1,8 @@
 import ProductsController from '../../../src/controllers/products';
 import sinon from 'sinon';
-import sinonAsPromised from 'sinon-as-promised';
 import Product from '../../../src/models/product';
 
-describe('Routes: Products', () => {
+describe('Constrollers: Products', () => {
   const defaultProduct = [{
     name: 'Default product',
     description: 'product description',
@@ -47,9 +46,9 @@ describe('Routes: Products', () => {
       const productsController = new ProductsController(Product);
 
       return productsController.get(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.send, defaultProduct);
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.send, defaultProduct);
+        });
     });
 
     it('should return 400 when an error occurs', () => {
@@ -60,14 +59,14 @@ describe('Routes: Products', () => {
 
       response.status.withArgs(400).returns(response);
       Product.find = sinon.stub();
-      Product.find.withArgs({}).rejects("Error");
+      Product.find.withArgs({}).rejects({ message: 'Error' });
 
       const productsController = new ProductsController(Product);
 
       return productsController.get(defaultRequest, response)
-      .then(() => {
-        sinon.assert.calledWith(response.send, 'Error');
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        });
     });
   });
 
@@ -88,9 +87,9 @@ describe('Routes: Products', () => {
       const productsController = new ProductsController(fakeProduct);
 
       return productsController.create(requestWithBody, response)
-      .then(() => {
-        sinon.assert.calledWith(response.send);
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.send);
+        });
     });
 
     it('should return 412 when an error occurs on new prodct creation', () => {
@@ -104,14 +103,14 @@ describe('Routes: Products', () => {
       }
 
       response.status.withArgs(412).returns(response);
-      sinon.stub(fakeProduct.prototype, 'save').withArgs().rejects('Error');
+      sinon.stub(fakeProduct.prototype, 'save').withArgs().rejects({ message: 'Error' });
 
       const productsController = new ProductsController(fakeProduct);
 
       return productsController.create(defaultRequest, response)
-      .then(() => {
-        sinon.assert.calledWith(response.status, 412);
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.status, 412);
+        });
     });
   });
 
@@ -144,9 +143,9 @@ describe('Routes: Products', () => {
       const productsController = new ProductsController(fakeProduct);
 
       return productsController.update(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.sendStatus, 200);
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.sendStatus, 200);
+        });
     });
 
     it('should return 412 when an error occurs while updating a product', () => {
@@ -173,15 +172,15 @@ describe('Routes: Products', () => {
       }
 
       const findOneAndUpdateStub = sinon.stub(fakeProduct, 'findOneAndUpdate');
-      findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedProduct).rejects("Error");
+      findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedProduct).rejects({ message: 'Error' });
       response.status.withArgs(412).returns(response);
 
       const productsController = new ProductsController(fakeProduct);
 
       return productsController.update(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.send, 'Error');
-      })
+        .then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        })
     });
   });
 
@@ -208,9 +207,9 @@ describe('Routes: Products', () => {
       const productsController = new ProductsController(fakeProduct);
 
       return productsController.delete(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.sendStatus, 204);
-      });
+        .then(() => {
+          sinon.assert.calledWith(response.sendStatus, 204);
+        });
     });
 
     it('should return 400 when an error occurs while deleting a product', () => {
@@ -231,15 +230,15 @@ describe('Routes: Products', () => {
 
       const removeStub = sinon.stub(fakeProduct, 'remove');
 
-      removeStub.withArgs({ _id: fakeId }).rejects("Error");
+      removeStub.withArgs({ _id: fakeId }).rejects({message: 'Error'});
       response.status.withArgs(400).returns(response);
 
       const productsController = new ProductsController(fakeProduct);
 
       return productsController.delete(request, response)
-      .then(() => {
-        sinon.assert.calledWith(response.send, 'Error');
-      })
+        .then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        })
     });
   });
 });

@@ -37,11 +37,11 @@ describe('Routes: Products', () => {
     it('should return a list of products', done => {
 
       request
-      .get('/products')
-      .end((err, res) => {
-        expect(res.body).to.eql([expectedProduct]);
-        done(err);
-      });
+        .get('/products')
+        .end((err, res) => {
+          expect(res.body).to.eql([expectedProduct]);
+          done(err);
+        });
     });
 
     it('should return one product', done => {
