@@ -206,7 +206,7 @@ describe('Constrollers: Products', () => {
 
       const productsController = new ProductsController(fakeProduct);
 
-      return productsController.delete(request, response)
+      return productsController.remove(request, response)
         .then(() => {
           sinon.assert.calledWith(response.sendStatus, 204);
         });
@@ -235,7 +235,7 @@ describe('Constrollers: Products', () => {
 
       const productsController = new ProductsController(fakeProduct);
 
-      return productsController.delete(request, response)
+      return productsController.remove(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, 'Error');
         })

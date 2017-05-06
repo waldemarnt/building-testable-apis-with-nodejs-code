@@ -31,7 +31,7 @@ class ProductsController {
     .catch(err => res.status(412).send(err.message));
   }
 
-  delete(req, res) {
+  remove(req, res) {
     return this.Product.remove({ _id: req.params.id})
     .then(() => res.sendStatus(204))
     .catch(err => res.status(400).send(err.message));
