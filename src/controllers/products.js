@@ -4,7 +4,7 @@ class ProductsController {
   };
 
   get(req, res) {
-    let findCreteria = {};
+    let findCriteria = {};
     const _id = req.params.id;
     if(_id) {
       findCriteria = {
