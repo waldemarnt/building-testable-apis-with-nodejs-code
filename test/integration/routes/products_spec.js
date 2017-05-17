@@ -56,7 +56,7 @@ describe('Routes: Products', () => {
   });
 
   describe('POST /products', () => {
-    it('should create a producut into the database', done => {
+    it('should create a product into the database', done => {
       const customId = '56cb91bdc3464f14678934ba';
       const newProduct = Object.assign({},{ _id: customId }, defaultProduct)
       const expectedSavedProduct = {
