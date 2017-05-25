@@ -4,16 +4,17 @@ class ProductsController {
   };
 
   get(req, res) {
-    let findCriteria = {};
-    const _id = req.params.id;
-    if(_id) {
-      findCriteria = {
-        _id
-      }
-    };
 
-    return this.Product.find(findCreteria)
+    return this.Product.find({})
       .then(products => res.send(products))
+      .catch(err => res.status(400).send(err.message));
+  }
+
+  getById(req, res) {
+    const { params: { id } } = req;
+
+    return this.Product.find({_id: id})
+      .then(product => res.send(product))
       .catch(err => res.status(400).send(err.message));
   }
 

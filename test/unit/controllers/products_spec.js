@@ -45,7 +45,7 @@ describe('Constrollers: Products', () => {
 
       const productsController = new ProductsController(Product);
 
-      return productsController.get(request, response)
+      return productsController.getById(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, defaultProduct);
         });
