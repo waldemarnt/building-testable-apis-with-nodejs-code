@@ -20,9 +20,14 @@
     "supertest": "^2.0.1"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.15.2",
-    "config": "^1.29.4",
+    "config": "^1.29.0",
     "express": "^4.14.0",
-    "mongoose": "^4.8.0"
+    "express-acl": "^1.0.4",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.8.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1"
   }
 }
