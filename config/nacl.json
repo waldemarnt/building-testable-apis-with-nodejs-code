@@ -10,11 +10,11 @@
     ]
   },
   {
-    "group": "normalUser",
+    "group": "user",
     "permissions": [
       {
-        "resource": "*",
-        "methods": ["POST", "GET", "PUT", "DELETE"],
+        "resource": "users",
+        "methods": ["GET"],
         "action": "allow"
       }
     ]

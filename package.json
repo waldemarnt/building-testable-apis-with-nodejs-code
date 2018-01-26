@@ -27,6 +27,7 @@
     "express-acl": "^1.0.4",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.8.0",
+    "mongoose-data-seed": "^1.0.4",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1"
   }

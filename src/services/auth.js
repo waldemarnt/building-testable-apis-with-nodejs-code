@@ -17,7 +17,7 @@ class Auth {
       });
   }
 
-  generateToken(payload) {
+  static generateToken(payload) {
     return jwt.sign(payload, config.get('auth.key'), {
       expiresIn: config.get('auth.tokenExpiresIn')
     });

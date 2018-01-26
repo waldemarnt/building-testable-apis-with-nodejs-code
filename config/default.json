@@ -1,6 +1,6 @@
 {
   "database": {
-    "mongoUrl": "mongodb://localhost:27017/test"
+    "mongoUrl": "mongodb://localhost:27017/shop"
   },
   "auth": {
     "key": "thisisaverysecurekey",

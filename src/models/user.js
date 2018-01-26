@@ -11,7 +11,6 @@ const schema = new mongoose.Schema({
 schema.pre('save', function(next) {
   const user = this;
   const salt = bcrypt.genSaltSync();
-  user.role = 'normalUser';
   user.password = bcrypt.hashSync(user.password, salt);
   next();
 });

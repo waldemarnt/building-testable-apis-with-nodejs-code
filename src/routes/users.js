@@ -4,8 +4,7 @@ import User from '../models/user';
 import Auth from '../services/auth.js';
 
 const router = express.Router();
-const authService = new Auth(User);
-const usersController = new UsersController(User, authService);
+const usersController = new UsersController(User, Auth);
 router.get('/', (req, res) => usersController.get(req, res));
 router.get('/:id', (req, res) => usersController.getById(req, res));
 router.post('/', (req, res) => usersController.create(req, res));

@@ -1,0 +1,4 @@
+{
+  "es6": true,
+  "seedersFolder": "config/seeders"
+}

@@ -1,7 +1,7 @@
 class UsersController {
-  constructor(User, authService) {
+  constructor(User, AuthService) {
     this.User = User;
-    this.authService = authService;
+    this.AuthService = AuthService;
   };
 
   get(req, res) {
@@ -39,15 +39,15 @@ class UsersController {
   }
 
   authenticate(req, res) {
-    return this.authService.authenticate(req.body)
+    const authService = new this.AuthService(this.User);
+    return authService.authenticate(req.body)
       .then(user => {
         if(!user) {
           return res.sendStatus(403);
         }
-        return res.send({token: this.authService.generateToken(user.toJSON())});
+        return res.send({token: this.AuthService.generateToken(user.toJSON())});
       });
   }
-
 }
 
 export default UsersController;

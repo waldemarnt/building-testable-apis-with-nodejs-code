@@ -1,36 +1,25 @@
 import User from '../../../src/models/user';
 import jwt from 'jsonwebtoken';
+import AuthService from '../../../src/services/auth';
 
 describe.only('Routes: Users', () => {
-  let request;
-
-  before(() => {
-    return setupApp()
-      .then(app => {
-        request = supertest(app)
-      });
-  });
-
   const defaultId = '56cb91bdc3464f14678934ca';
-  const defaultUser = {
+  const defaultAdmin = {
     name: 'Jhon Doe',
     email: 'jhon@mail.com',
     password: '123password',
-    role: 'normalUser'
+    role: 'admin'
   };
-  const expectedUser = {
+  const expectedAdminUser = {
     _id: defaultId,
     name: 'Jhon Doe',
     email: 'jhon@mail.com',
-    role: 'normalUser'
+    role: 'admin'
   };
-  const key = 'thisisaverysecurekey';
-  const authToken = jwt.sign(expectedUser, key, {
-    expiresIn: "7d"
-  });
+  const authToken = AuthService.generateToken(expectedAdminUser);
 
   beforeEach(() => {
-    const user = new User(defaultUser);
+    const user = new User(defaultAdmin);
     user._id = '56cb91bdc3464f14678934ca';
     return User.remove({})
       .then(() => user.save());
@@ -45,7 +34,7 @@ describe.only('Routes: Users', () => {
         .get('/users')
         .set({'x-access-token': authToken})
         .end((err, res) => {
-          expect(res.body).to.eql([expectedUser]);
+          expect(res.body).to.eql([expectedAdminUser]);
           done(err);
         });
     });
@@ -58,7 +47,7 @@ describe.only('Routes: Users', () => {
           .set({'x-access-token': authToken})
           .end((err, res) => {
             expect(res.statusCode).to.eql(200);
-            expect(res.body).to.eql([expectedUser]);
+            expect(res.body).to.eql([expectedAdminUser]);
             done(err);
           });
       });
@@ -70,12 +59,12 @@ describe.only('Routes: Users', () => {
 
       it('should return a new user with status code 201', done => {
         const customId = '56cb91bdc3464f14678934ba';
-        const newUser = Object.assign({},{ _id: customId, __v:0 }, defaultUser);
+        const newUser = Object.assign({},{ _id: customId, __v:0 }, defaultAdmin);
         const expectedSavedUser = {
           _id: customId,
           name: 'Jhon Doe',
           email: 'jhon@mail.com',
-          role: 'normalUser'
+          role: 'admin'
         };
 
         request
@@ -97,7 +86,7 @@ describe.only('Routes: Users', () => {
         const customUser = {
           name: 'Din Doe'
         };
-        const updatedUser = Object.assign({}, customUser, defaultUser)
+        const updatedUser = Object.assign({}, customUser, defaultAdmin)
 
         request
           .put(`/users/${defaultId}`)
@@ -157,20 +146,6 @@ describe.only('Routes: Users', () => {
           });
       });
 
-      it('should return unauthorized when the user does not exists', done => {
-
-        request
-          .post(`/users/authenticate`)
-          .send({
-            email: 'notexist@mail.com',
-            password: 'somepassword'
-          })
-          .end((err, res) => {
-            expect(res.status).to.eql(403);
-            done(err);
-          });
-      });
     });
   });
-
 });
