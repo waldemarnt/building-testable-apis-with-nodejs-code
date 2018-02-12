@@ -13,7 +13,7 @@
     "group": "user",
     "permissions": [
       {
-        "resource": "users",
+        "resource": "products",
         "methods": ["GET"],
         "action": "allow"
       }
