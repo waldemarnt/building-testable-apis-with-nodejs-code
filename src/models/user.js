@@ -1,10 +1,18 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const schema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
   role: String
+});
+
+schema.pre('save', function(next) {
+  const user = this;
+  const salt = bcrypt.genSaltSync();
+  user.password = bcrypt.hashSync(user.password, salt);
+  next();
 });
 
 schema.set('toJSON', {
