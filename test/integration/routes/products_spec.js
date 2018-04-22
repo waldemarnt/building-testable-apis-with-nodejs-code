@@ -1,15 +1,6 @@
 import Product from '../../../src/models/product';
 
 describe('Routes: Products', () => {
-  let request;
-
-  before(()=> {
-    return setupApp()
-      .then(app => {
-        request = supertest(app)
-      });
-  });
-
   const defaultId = '56cb91bdc3464f14678934ca';
   const defaultProduct = {
     name: 'Default product',
