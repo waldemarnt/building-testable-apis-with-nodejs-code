@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import AuthService from '../../../src/services/auth';
 
 describe.only('Routes: Users', () => {
-  const defaultId = '56cb91bdc3464f14678934ca';
+ const defaultId = '56cb91bdc3464f14678934ca';
   const defaultAdmin = {
     name: 'Jhon Doe',
     email: 'jhon@mail.com',

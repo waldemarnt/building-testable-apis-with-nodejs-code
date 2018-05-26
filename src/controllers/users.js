@@ -1,4 +1,5 @@
 class UsersController {
+
   constructor(User, AuthService) {
     this.User = User;
     this.AuthService = AuthService;
