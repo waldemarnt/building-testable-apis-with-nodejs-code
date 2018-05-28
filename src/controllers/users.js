@@ -26,7 +26,17 @@ class UsersController {
   }
 
   update(req, res) {
-    return this.User.findOneAndUpdate({ _id: req.params.id}, req.body)
+    const body = req.body;
+    return this.User.findById(req.params.id)
+      .then(user => {
+        user.name = body.name
+        user.email = body.email
+        user.role = body.role
+        if(body.password) {
+          user.password = body.password
+        }
+        return user.save();
+      })
       .then(() => res.sendStatus(200))
       .catch(err => res.status(422).send(err.message));
   }
