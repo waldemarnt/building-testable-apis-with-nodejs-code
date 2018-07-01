@@ -84,9 +84,9 @@ describe.only('Routes: Users', () => {
     context('when editing an user', () => {
       it('should update the user and return 200 as status code', done => {
         const customUser = {
-          name: 'Din Doe'
+          name: 'Din Doe',
         };
-        const updatedUser = Object.assign({}, customUser, defaultAdmin)
+        const updatedUser = Object.assign({}, defaultAdmin, customUser)
 
         request
           .put(`/users/${defaultId}`)
