@@ -201,7 +201,7 @@ describe('Controller: Users', () => {
     });
   });
 
-  describe('delete() product', () => {
+  describe('delete() user', () => {
     it('should respond with 204 when the user has been deleted', () => {
       const fakeId = 'a-fake-id';
       const request = {
