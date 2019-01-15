@@ -1,5 +1,8 @@
 import UsersController from '../../../src/controllers/users';
 import sinon from 'sinon';
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import bcrypt from 'bcrypt';
 import User from '../../../src/models/user';
 
 describe('Controller: Users', () => {
@@ -258,6 +261,67 @@ describe('Controller: Users', () => {
             sinon.assert.calledWith(response.send, 'Error');
           });
       });
+    });
+  });
+
+  describe('authenticate', () => {
+    it('should authenticate a user', done => {
+      const fakeUserModel = {};
+      const user = {
+        name: 'Jhon Doe',
+        email: 'jhondoe@mail.com',
+        password: '12345',
+        role: 'admin'
+      };
+      const hashedPassword = bcrypt.hashSync(user.password, 10);
+      class FakeAuthService {
+        authenticate() {
+          return Promise.resolve({
+            name: user.name,
+            email: user.email,
+            password: hashedPassword,
+            role: user.role,
+            toJSON: () => ({ email: user.email })
+          })
+        }
+      };
+    
+      const jwtToken = jwt.sign(
+        Object.assign({}, user, { password: hashedPassword }),
+        config.get('auth.key'),{
+          expiresIn: config.get('auth.tokenExpiresIn')
+        });
+    
+      const fakeReq = {
+        body: user
+      };
+      const fakeRes = {
+        send: token => {
+          expect(token).to.eql({ token: jwtToken });
+          done();
+        }
+      };
+      const usersController = new UsersController(fakeUserModel, FakeAuthService);
+      usersController.authenticate(fakeReq, fakeRes);
+    });
+
+    it('should return 401 when theres no user', () => {
+      const fakeUserModel = {};
+      const fakeReq = {
+        body: {}
+      };
+      const fakeRes = {
+        sendStatus: sinon.spy()
+      };
+      class FakeAuthService {
+        authenticate() {
+          return Promise.resolve(false)
+        }
+      };
+      const usersController = new UsersController(fakeUserModel, FakeAuthService);
+      return usersController
+        .authenticate(fakeReq, fakeRes)
+        .then(() => sinon.assert.calledWith(fakeRes.sendStatus, 401));
     });
   });
 });

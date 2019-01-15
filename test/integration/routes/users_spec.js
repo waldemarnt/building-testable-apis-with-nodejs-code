@@ -1,4 +1,5 @@
 import User from '../../../src/models/user';
+import AuthService from '../../../src/services/auth';
 
 describe('Routes: Users', () => {
   const defaultId = '56cb91bdc3464f14678934ca';
@@ -14,6 +15,7 @@ describe('Routes: Users', () => {
     email: 'jhon@mail.com',
     role: 'admin'
   };
+  const authToken = AuthService.generateToken(expectedAdminUser);
 
   beforeEach(() => {
     const user = new User(defaultAdmin);
@@ -29,6 +31,7 @@ describe('Routes: Users', () => {
 
       request
         .get('/users')
+        .set({'x-access-token': authToken})
         .end((err, res) => {
           expect(res.body).to.eql([expectedAdminUser]);
           done(err);
@@ -40,6 +43,7 @@ describe('Routes: Users', () => {
 
         request
           .get(`/users/${defaultId}`)
+          .set({'x-access-token': authToken})
           .end((err, res) => {
             expect(res.statusCode).to.eql(200);
             expect(res.body).to.eql([expectedAdminUser]);
@@ -54,7 +58,7 @@ describe('Routes: Users', () => {
 
       it('should return a new user with status code 201', done => {
         const customId = '56cb91bdc3464f14678934ba';
-        const newUser = Object.assign({},{ _id: customId, __v:0 }, defaultAdmin);
+        const newUser = Object.assign({}, { _id: customId, __v: 0 }, defaultAdmin);
         const expectedSavedUser = {
           _id: customId,
           name: 'Jhon Doe',
@@ -64,6 +68,7 @@ describe('Routes: Users', () => {
 
         request
           .post('/users')
+          .set({'x-access-token': authToken})
           .send(newUser)
           .end((err, res) => {
             expect(res.statusCode).to.eql(201);
@@ -84,6 +89,7 @@ describe('Routes: Users', () => {
 
         request
           .put(`/users/${defaultId}`)
+          .set({'x-access-token': authToken})
           .send(updatedUser)
           .end((err, res) => {
             expect(res.status).to.eql(200);
@@ -99,6 +105,7 @@ describe('Routes: Users', () => {
 
         request
           .delete(`/users/${defaultId}`)
+          .set({'x-access-token': authToken})
           .end((err, res) => {
             expect(res.status).to.eql(204);
             done(err);
@@ -106,5 +113,37 @@ describe('Routes: Users', () => {
       });
     });
   });
+
+  context('when authenticating an user', () => {
+    it('should generate a valid token', done => {
+
+      request
+        .post(`/users/authenticate`)
+        .send({
+          email: 'jhon@mail.com',
+          password: '123password'
+        })
+        .end((err, res) => {
+          expect(res.body).to.have.key('token');
+          expect(res.status).to.eql(200);
+          done(err);
+        });
+    });
+
+    it('should return unauthorized when the password does not match', done => {
+
+      request
+        .post(`/users/authenticate`)
+        .send({
+          email: 'jhon@mail.com',
+          password: 'wrongpassword'
+        })
+        .end((err, res) => {
+          expect(res.status).to.eql(401);
+          done(err);
+        });
+    });
+  });
+
 
 });

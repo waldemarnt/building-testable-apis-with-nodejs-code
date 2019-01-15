@@ -1,6 +1,11 @@
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import bcrypt from 'bcrypt';
+
 class UsersController {
-  constructor(User) {
+  constructor(User, AuthService) {
     this.User = User;
+    this.AuthService = AuthService;
   };
 
   get(req, res) {
@@ -12,7 +17,7 @@ class UsersController {
   getById(req, res) {
     const { params: { id } } = req;
 
-    return this.User.find({ _id:id })
+    return this.User.find({ _id: id })
       .then(user => res.send(user))
       .catch(err => res.status(400).send(err.message));
   }
@@ -32,7 +37,7 @@ class UsersController {
         user.name = body.name
         user.email = body.email
         user.role = body.role
-        if(body.password) {
+        if (body.password) {
           user.password = body.password
         }
         return user.save();
@@ -42,10 +47,30 @@ class UsersController {
   }
 
   remove(req, res) {
-    return this.User.remove({ _id: req.params.id})
+    return this.User.remove({ _id: req.params.id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
+
+  authenticate(req, res) {
+    const authService = new this.AuthService(this.User);
+    return authService.authenticate(req.body)
+      .then(user => {
+        if(!user) {
+          return res.sendStatus(401);
+        }
+        const token = jwt.sign({
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          role: user.role
+        }, config.get('auth.key'), {
+            expiresIn: config.get('auth.tokenExpiresIn')
+          });
+        return res.send({ token });
+      });
+  }
+
 }
 
 export default UsersController;
