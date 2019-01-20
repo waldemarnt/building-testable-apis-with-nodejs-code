@@ -59,14 +59,12 @@ class UsersController {
         if(!user) {
           return res.sendStatus(401);
         }
-        const token = jwt.sign({
+        const token = this.AuthService.generateToken({
           name: user.name,
           email: user.email,
           password: user.password,
           role: user.role
-        }, config.get('auth.key'), {
-            expiresIn: config.get('auth.tokenExpiresIn')
-          });
+        });
         return res.send({ token });
       });
   }

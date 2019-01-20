@@ -274,6 +274,11 @@ describe('Controller: Users', () => {
         role: 'admin'
       };
       const hashedPassword = bcrypt.hashSync(user.password, 10);
+      const jwtToken = jwt.sign(
+        Object.assign({}, user, { password: hashedPassword }),
+        config.get('auth.key'),{
+          expiresIn: config.get('auth.tokenExpiresIn')
+        });
       class FakeAuthService {
         authenticate() {
           return Promise.resolve({
@@ -284,13 +289,11 @@ describe('Controller: Users', () => {
             toJSON: () => ({ email: user.email })
           })
         }
+
+        static generateToken() {
+          return jwtToken;
+        }
       };
-    
-      const jwtToken = jwt.sign(
-        Object.assign({}, user, { password: hashedPassword }),
-        config.get('auth.key'),{
-          expiresIn: config.get('auth.tokenExpiresIn')
-        });
     
       const fakeReq = {
         body: user
