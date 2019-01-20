@@ -1,7 +1,3 @@
-import jwt from 'jsonwebtoken';
-import config from 'config';
-import bcrypt from 'bcrypt';
-
 class UsersController {
   constructor(User, AuthService) {
     this.User = User;
