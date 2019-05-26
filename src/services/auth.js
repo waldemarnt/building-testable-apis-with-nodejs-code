@@ -8,12 +8,13 @@ class Auth {
   }
 
   authenticate(data) {
-    return this.User.findOne({email: data.email})
+    return this.User.findOne({ email: data.email })
       .then(user => {
-        if(!user || !bcrypt.compareSync(data.password, user.password)) {
+        if (!user) {
           return false;
         }
-        return user;
+        return bcrypt.compare(data.password, user.password)
+          .then(res => res ? user : false)
       });
   }
 
