@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
 schema.pre('save', function(next) {
   if(!this.password || !this.isModified('password')) {
     return next();
-  };
+  }
   hashAsync(this.password, 10)
     .then(hashedPassword => {
       this.password = hashedPassword;
@@ -23,7 +23,7 @@ schema.pre('save', function(next) {
 });
 
 schema.set('toJSON', {
-  transform: (doc, ret, options) => ({
+  transform: (doc, ret) => ({
     _id: ret._id,
     email: ret.email,
     name: ret.name,

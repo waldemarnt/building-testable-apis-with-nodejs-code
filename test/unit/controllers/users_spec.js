@@ -149,7 +149,7 @@ describe('Controller: Users', () => {
       class fakeUser {
         static findById() { }
         save() { }
-      };
+      }
       const fakeUserInstance = new fakeUser();
 
       const saveSpy = sinon.spy(fakeUser.prototype, 'save');
@@ -293,7 +293,7 @@ describe('Controller: Users', () => {
         static generateToken() {
           return jwtToken;
         }
-      };
+      }
     
       const fakeReq = {
         body: user
@@ -320,7 +320,7 @@ describe('Controller: Users', () => {
         authenticate() {
           return Promise.resolve(false)
         }
-      };
+      }
       const usersController = new UsersController(fakeUserModel, FakeAuthService);
       return usersController
         .authenticate(fakeReq, fakeRes)
