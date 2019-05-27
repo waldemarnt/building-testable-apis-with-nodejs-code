@@ -11,7 +11,9 @@ class UsersController {
   }
 
   getById(req, res) {
-    const { params: { id } } = req;
+    const {
+      params: { id }
+    } = req;
 
     return this.User.find({ _id: id })
       .then(user => res.send(user))
@@ -21,7 +23,8 @@ class UsersController {
   create(req, res) {
     const user = new this.User(req.body);
 
-    return user.save()
+    return user
+      .save()
       .then(() => res.status(201).send(user))
       .catch(err => res.status(422).send(err.message));
   }
@@ -30,11 +33,11 @@ class UsersController {
     const body = req.body;
     return this.User.findById(req.params.id)
       .then(user => {
-        user.name = body.name
-        user.email = body.email
-        user.role = body.role
+        user.name = body.name;
+        user.email = body.email;
+        user.role = body.role;
         if (body.password) {
-          user.password = body.password
+          user.password = body.password;
         }
         return user.save();
       })
@@ -50,21 +53,19 @@ class UsersController {
 
   authenticate(req, res) {
     const authService = new this.AuthService(this.User);
-    return authService.authenticate(req.body)
-      .then(user => {
-        if(!user) {
-          return res.sendStatus(401);
-        }
-        const token = this.AuthService.generateToken({
-          name: user.name,
-          email: user.email,
-          password: user.password,
-          role: user.role
-        });
-        return res.send({ token });
+    return authService.authenticate(req.body).then(user => {
+      if (!user) {
+        return res.sendStatus(401);
+      }
+      const token = this.AuthService.generateToken({
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        role: user.role
       });
+      return res.send({ token });
+    });
   }
-
 }
 
 export default UsersController;

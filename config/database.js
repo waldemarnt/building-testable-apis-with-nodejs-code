@@ -5,10 +5,11 @@ mongoose.Promise = Promise;
 
 const mongodbUrl = config.get('database.mongoUrl');
 
-const connect = () => mongoose.connect(mongodbUrl, {
-  useMongoClient: true
-});
+const connect = () =>
+  mongoose.connect(mongodbUrl, {
+    useMongoClient: true
+  });
 
 export default {
   connect
-}
+};

@@ -6,14 +6,16 @@ import bcrypt from 'bcrypt';
 import User from '../../../src/models/user';
 
 describe('Controller: Users', () => {
-  const defaultUser = [{
-    __v: 0,
-    _id: "56cb91bdc3464f14678934ca",
-    name: 'Default User',
-    email: 'user@mail.com',
-    password: 'password',
-    role: 'user'
-  }];
+  const defaultUser = [
+    {
+      __v: 0,
+      _id: '56cb91bdc3464f14678934ca',
+      name: 'Default User',
+      email: 'user@mail.com',
+      password: 'password',
+      role: 'user'
+    }
+  ];
 
   const defaultRequest = {
     params: {}
@@ -30,10 +32,9 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(User);
 
-      return usersController.get(defaultRequest, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, defaultUser);
-        });
+      return usersController.get(defaultRequest, response).then(() => {
+        sinon.assert.calledWith(response.send, defaultUser);
+      });
     });
 
     it('should return 400 when an error occurs', () => {
@@ -49,12 +50,10 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(User);
 
-      return usersController.get(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, 'Error');
-        });
+      return usersController.get(request, response).then(() => {
+        sinon.assert.calledWith(response.send, 'Error');
+      });
     });
-
   });
 
   describe('getById()', () => {
@@ -74,33 +73,38 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(User);
 
-      return usersController.getById(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, defaultUser);
-        });
+      return usersController.getById(request, response).then(() => {
+        sinon.assert.calledWith(response.send, defaultUser);
+      });
     });
   });
 
   describe('create() user', () => {
     it('should call send with a new user', () => {
-      const requestWithBody = Object.assign({}, { body: defaultUser[0] }, defaultRequest);
+      const requestWithBody = Object.assign(
+        {},
+        { body: defaultUser[0] },
+        defaultRequest
+      );
       const response = {
         send: sinon.spy(),
         status: sinon.stub()
       };
       class fakeUser {
-        save() { }
+        save() {}
       }
 
       response.status.withArgs(201).returns(response);
-      sinon.stub(fakeUser.prototype, 'save').withArgs().resolves();
+      sinon
+        .stub(fakeUser.prototype, 'save')
+        .withArgs()
+        .resolves();
 
       const usersController = new UsersController(fakeUser);
 
-      return usersController.create(requestWithBody, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send);
-        });
+      return usersController.create(requestWithBody, response).then(() => {
+        sinon.assert.calledWith(response.send);
+      });
     });
 
     context('when an error occurs', () => {
@@ -111,18 +115,20 @@ describe('Controller: Users', () => {
         };
 
         class fakeUser {
-          save() { }
+          save() {}
         }
 
         response.status.withArgs(422).returns(response);
-        sinon.stub(fakeUser.prototype, 'save').withArgs().rejects({ message: 'Error' });
+        sinon
+          .stub(fakeUser.prototype, 'save')
+          .withArgs()
+          .rejects({ message: 'Error' });
 
         const usersController = new UsersController(fakeUser);
 
-        return usersController.create(defaultRequest, response)
-          .then(() => {
-            sinon.assert.calledWith(response.status, 422);
-          });
+        return usersController.create(defaultRequest, response).then(() => {
+          sinon.assert.calledWith(response.status, 422);
+        });
       });
     });
   });
@@ -147,8 +153,8 @@ describe('Controller: Users', () => {
         sendStatus: sinon.spy()
       };
       class fakeUser {
-        static findById() { }
-        save() { }
+        static findById() {}
+        save() {}
       }
       const fakeUserInstance = new fakeUser();
 
@@ -158,11 +164,10 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(fakeUser);
 
-      return usersController.update(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.sendStatus, 200);
-          sinon.assert.calledOnce(saveSpy);
-        });
+      return usersController.update(request, response).then(() => {
+        sinon.assert.calledWith(response.sendStatus, 200);
+        sinon.assert.calledOnce(saveSpy);
+      });
     });
 
     context('when an error occurs', () => {
@@ -187,7 +192,7 @@ describe('Controller: Users', () => {
         };
 
         class fakeUser {
-          static findById() { }
+          static findById() {}
         }
 
         const findByIdStub = sinon.stub(fakeUser, 'findById');
@@ -196,10 +201,9 @@ describe('Controller: Users', () => {
 
         const usersController = new UsersController(fakeUser);
 
-        return usersController.update(request, response)
-          .then(() => {
-            sinon.assert.calledWith(response.send, 'Error');
-          });
+        return usersController.update(request, response).then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        });
       });
     });
   });
@@ -217,7 +221,7 @@ describe('Controller: Users', () => {
       };
 
       class fakeUser {
-        static remove() { }
+        static remove() {}
       }
 
       const removeStub = sinon.stub(fakeUser, 'remove');
@@ -226,10 +230,9 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(fakeUser);
 
-      return usersController.remove(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.sendStatus, 204);
-        });
+      return usersController.remove(request, response).then(() => {
+        sinon.assert.calledWith(response.sendStatus, 204);
+      });
     });
 
     context('when an error occurs', () => {
@@ -246,7 +249,7 @@ describe('Controller: Users', () => {
         };
 
         class fakeUser {
-          static remove() { }
+          static remove() {}
         }
 
         const removeStub = sinon.stub(fakeUser, 'remove');
@@ -256,10 +259,9 @@ describe('Controller: Users', () => {
 
         const usersController = new UsersController(fakeUser);
 
-        return usersController.remove(request, response)
-          .then(() => {
-            sinon.assert.calledWith(response.send, 'Error');
-          });
+        return usersController.remove(request, response).then(() => {
+          sinon.assert.calledWith(response.send, 'Error');
+        });
       });
     });
   });
@@ -276,9 +278,11 @@ describe('Controller: Users', () => {
       const hashedPassword = bcrypt.hashSync(user.password, 10);
       const jwtToken = jwt.sign(
         Object.assign({}, user, { password: hashedPassword }),
-        config.get('auth.key'),{
+        config.get('auth.key'),
+        {
           expiresIn: config.get('auth.tokenExpiresIn')
-        });
+        }
+      );
       class FakeAuthService {
         authenticate() {
           return Promise.resolve({
@@ -287,14 +291,14 @@ describe('Controller: Users', () => {
             password: hashedPassword,
             role: user.role,
             toJSON: () => ({ email: user.email })
-          })
+          });
         }
 
         static generateToken() {
           return jwtToken;
         }
       }
-    
+
       const fakeReq = {
         body: user
       };
@@ -304,7 +308,10 @@ describe('Controller: Users', () => {
           done();
         }
       };
-      const usersController = new UsersController(fakeUserModel, FakeAuthService);
+      const usersController = new UsersController(
+        fakeUserModel,
+        FakeAuthService
+      );
       usersController.authenticate(fakeReq, fakeRes);
     });
 
@@ -318,14 +325,16 @@ describe('Controller: Users', () => {
       };
       class FakeAuthService {
         authenticate() {
-          return Promise.resolve(false)
+          return Promise.resolve(false);
         }
       }
-      const usersController = new UsersController(fakeUserModel, FakeAuthService);
+      const usersController = new UsersController(
+        fakeUserModel,
+        FakeAuthService
+      );
       return usersController
         .authenticate(fakeReq, fakeRes)
         .then(() => sinon.assert.calledWith(fakeRes.sendStatus, 401));
     });
   });
 });
-

@@ -28,7 +28,9 @@ describe('Service: Auth', () => {
       return hashAsync('12345', 10)
         .then(hashedPassword => {
           userFromDatabase.password = hashedPassword;
-          fakeUserModel.findOne.withArgs({ email: 'jhondoe@mail.com' }).resolves(userFromDatabase);
+          fakeUserModel.findOne
+            .withArgs({ email: 'jhondoe@mail.com' })
+            .resolves(userFromDatabase);
           return authService.authenticate(user);
         })
         .then(user => {
@@ -44,9 +46,13 @@ describe('Service: Auth', () => {
       const fakeUserModel = {
         findOne: sinon.stub()
       };
-      fakeUserModel.findOne.resolves({ email: user.email, password: 'aFakeHashedPassword' });
+      fakeUserModel.findOne.resolves({
+        email: user.email,
+        password: 'aFakeHashedPassword'
+      });
       const authService = new AuthService(fakeUserModel);
-      return authService.authenticate(user)
+      return authService
+        .authenticate(user)
         .then(response => expect(response).to.be.false);
     });
   });

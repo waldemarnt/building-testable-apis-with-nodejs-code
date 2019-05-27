@@ -8,14 +8,14 @@ class Auth {
   }
 
   authenticate(data) {
-    return this.User.findOne({ email: data.email })
-      .then(user => {
-        if (!user) {
-          return false;
-        }
-        return bcrypt.compare(data.password, user.password)
-          .then(res => res ? user : false)
-      });
+    return this.User.findOne({ email: data.email }).then(user => {
+      if (!user) {
+        return false;
+      }
+      return bcrypt
+        .compare(data.password, user.password)
+        .then(res => (res ? user : false));
+    });
   }
 
   static generateToken(payload) {

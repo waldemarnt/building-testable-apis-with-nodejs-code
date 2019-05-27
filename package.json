@@ -9,7 +9,10 @@
     "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
     "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
     "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --fix --ext .js"
+    "lint:fix": "eslint . --fix --ext .js",
+    "prettier:list": "prettier --check '**/*.js'",
+    "prettier:fix": "prettier --write '**/*.js'",
+    "style:fix": "npm run lint:fix & npm run prettier:fix"
   },
   "engines": {
     "node": ">=8.10.0"
@@ -24,6 +27,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-node": "^9.1.0",
     "mocha": "^3.2.0",
+    "prettier": "1.17.1",
     "sinon": "^2.2.0",
     "supertest": "^2.0.1"
   },

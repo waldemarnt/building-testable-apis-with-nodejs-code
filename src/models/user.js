@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
 });
 
 schema.pre('save', function(next) {
-  if(!this.password || !this.isModified('password')) {
+  if (!this.password || !this.isModified('password')) {
     return next();
   }
   hashAsync(this.password, 10)
