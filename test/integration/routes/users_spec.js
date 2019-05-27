@@ -38,7 +38,7 @@ describe('Routes: Users', () => {
         });
     });
 
-    context('when an id is specified', done => {
+    context('when an id is specified', () => {
       it('should return 200 with one user', done => {
 
         request

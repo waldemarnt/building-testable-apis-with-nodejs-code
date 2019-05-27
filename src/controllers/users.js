@@ -2,7 +2,7 @@ class UsersController {
   constructor(User, AuthService) {
     this.User = User;
     this.AuthService = AuthService;
-  };
+  }
 
   get(req, res) {
     return this.User.find({})
