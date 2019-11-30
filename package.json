@@ -4,24 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir dist",
+    "start": "npm run build && node dist/server.js",
+    "start:dev": "babel-node src/server.js",
     "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
-    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js"
+    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-node6": "^11.0.0",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "sinon": "^1.17.6",
-    "supertest": "^2.0.1"
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "sinon": "^7.5.0",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "mongoose": "^4.8.0"
+    "mongoose": "^5.7.13"
   }
 }
