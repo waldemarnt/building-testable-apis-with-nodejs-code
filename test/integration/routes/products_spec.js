@@ -7,7 +7,7 @@ describe("Routes: Products", () => {
     request = supertest(app);
   });
 
-  after(async () => await app.database.close());
+  after(async () => await app.database.connection.close());
 
   const defaultProduct = {
     name: "Default product",

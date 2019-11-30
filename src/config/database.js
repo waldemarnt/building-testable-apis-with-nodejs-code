@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-mongoose.Promise = Promise;
-
 const mongodbUrl = process.env.MONGODB_URL || "mongodb://localhost/test";
 
 const connect = () =>
@@ -10,9 +8,7 @@ const connect = () =>
     useUnifiedTopology: true
   });
 
-const close = () => mongoose.connection.close();
-
 export default {
   connect,
-  close
+  connection: mongoose.connection
 };
