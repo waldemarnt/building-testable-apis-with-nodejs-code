@@ -14,10 +14,10 @@
   "devDependencies": {
     "@babel/cli": "^7.7.4",
     "@babel/core": "^7.7.4",
-    "@babel/node": "^7.7.4"
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.4"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.7.4",
     "body-parser": "^1.15.2",
     "express": "^4.14.0"
   }
