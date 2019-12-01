@@ -32,7 +32,7 @@ describe('Routes: Products', () => {
     return await product.save();
   });
 
-  afterEach(() => Product.deleteMany());
+  afterEach(async() => await Product.deleteMany());
 
   describe('GET /products', () => {
     it('should return a list of products', done => {
