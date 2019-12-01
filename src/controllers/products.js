@@ -43,10 +43,13 @@ class ProductsController {
     }
   }
 
-  remove(req, res) {
-    return this.Product.remove({ _id: req.params.id })
-      .then(() => res.sendStatus(204))
-      .catch(err => res.status(400).send(err.message));
+  async remove(req, res) {
+    try {
+      await this.Product.deleteOne({ _id: req.params.id });
+      res.sendStatus(204);
+    } catch (err) {
+      res.status(400).send(err.message);
+    }
   }
 }
 

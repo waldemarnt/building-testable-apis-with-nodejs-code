@@ -211,12 +211,12 @@ describe('Controller: Products', () => {
       };
 
       class fakeProduct {
-        static remove() {}
+        static deleteOne() {}
       }
 
-      const removeStub = sinon.stub(fakeProduct, 'remove');
+      const deleteOneStub = sinon.stub(fakeProduct, 'deleteOne');
 
-      removeStub.withArgs({ _id: fakeId }).resolves([1]);
+      deleteOneStub.withArgs({ _id: fakeId }).resolves();
 
       const productsController = new ProductsController(fakeProduct);
 
@@ -225,7 +225,7 @@ describe('Controller: Products', () => {
     });
 
     context('when an error occurs', () => {
-      it('should return 400', () => {
+      it('should return 400', async() => {
         const fakeId = 'a-fake-id';
         const request = {
           params: {
@@ -238,19 +238,18 @@ describe('Controller: Products', () => {
         };
 
         class fakeProduct {
-          static remove() {}
+          static deleteOne() {}
         }
 
-        const removeStub = sinon.stub(fakeProduct, 'remove');
+        const deleteOneStub = sinon.stub(fakeProduct, 'deleteOne');
 
-        removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' });
+        deleteOneStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' });
         response.status.withArgs(400).returns(response);
 
         const productsController = new ProductsController(fakeProduct);
 
-        return productsController.remove(request, response).then(() => {
-          sinon.assert.calledWith(response.send, 'Error');
-        });
+        await productsController.remove(request, response);
+        sinon.assert.calledWith(response.send, 'Error');
       });
     });
   });
