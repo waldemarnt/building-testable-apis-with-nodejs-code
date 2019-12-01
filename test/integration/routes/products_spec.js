@@ -2,13 +2,14 @@ import Product from '../../../src/models/product';
 
 describe('Routes: Products', () => {
   let request;
+  let app;
 
-  before(()=> {
-    return setupApp()
-      .then(app => {
-        request = supertest(app)
-      });
+  before(async () => {
+    app = await setupApp();
+    request = supertest(app);
   });
+
+  after(async () => await app.database.connection.close());
 
   const defaultProduct = {
     name: 'Default product',
@@ -23,24 +24,22 @@ describe('Routes: Products', () => {
     price: 100
   };
 
-  beforeEach(() => {
+  beforeEach(async() => {
+    await Product.deleteMany();
+
     const product = new Product(defaultProduct);
     product._id = '56cb91bdc3464f14678934ca';
-    return Product.remove({})
-      .then(() => product.save());
+    return await product.save();
   });
 
-  afterEach(() => Product.remove({}));
+  afterEach(() => Product.deleteMany());
 
   describe('GET /products', () => {
     it('should return a list of products', done => {
-
-      request
-        .get('/products')
-        .end((err, res) => {
-          expect(res.body).to.eql([expectedProduct]);
-          done(err);
-        });
+      request.get('/products').end((err, res) => {
+        expect(res.body).to.eql([expectedProduct]);
+        done(err);
+      });
     });
   });
 });
