@@ -15,24 +15,22 @@ describe('Routes: Products', () => {
     price: 100
   }
 
-  beforeEach(() => {
+  beforeEach(async() => {
+    await Product.deleteMany();
+
     const product = new Product(defaultProduct);
     product._id = '56cb91bdc3464f14678934ca';
-    return Product.remove({})
-      .then(() => product.save());
+    return await product.save();
   });
 
-  afterEach(() => Product.remove({}));
+  afterEach(async() => await Product.deleteMany());
 
   describe('GET /products', () => {
     it('should return a list of products', done => {
-
-      request
-        .get('/products')
-        .end((err, res) => {
-          expect(res.body).to.eql([expectedProduct]);
-          done(err);
-        });
+      request.get('/products').end((err, res) => {
+        expect(res.body).to.eql([expectedProduct]);
+        done(err);
+      });
     });
 
     context('when an id is specified', done => {
