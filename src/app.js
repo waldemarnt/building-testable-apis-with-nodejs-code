@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import routes from './routes';
-import database from '../config/database';
+import database from './database';
 import acl from 'express-acl';
 import authMiddleware from './middlewares/auth';
 
@@ -18,8 +18,14 @@ const configureExpress = () => {
   app.use(acl.authorize.unless({path:['/users/authenticate']}));
 
   app.use('/', routes);
+  app.database = database;
 
   return app;
 };
 
-export default () => database.connect().then(configureExpress);
+export default async () => {
+  const app = configureExpress();
+  await app.database.connect();
+
+  return app;
+};
