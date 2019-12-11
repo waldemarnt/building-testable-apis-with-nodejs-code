@@ -9,7 +9,7 @@ const hashAsync = Util.promisify(bcrypt.hash);
 
 describe('Service: Auth', () => {
   context('authenticate', () => {
-    it('should authenticate a user', async() => {
+    it('should authenticate a user', async () => {
       const fakeUserModel = {
         findOne: sinon.stub()
       };
@@ -21,11 +21,11 @@ describe('Service: Auth', () => {
 
       const authService = new AuthService(fakeUserModel);
       const hashedPassword = await hashAsync('12345', 10);
-      const userFromDatabase = { ...user,
-        password: hashedPassword
-      };
+      const userFromDatabase = { ...user, password: hashedPassword };
 
-      fakeUserModel.findOne.withArgs({ email: 'jhondoe@mail.com' }).resolves(userFromDatabase);
+      fakeUserModel.findOne
+        .withArgs({ email: 'jhondoe@mail.com' })
+        .resolves(userFromDatabase);
 
       const res = await authService.authenticate(user);
 
@@ -40,7 +40,10 @@ describe('Service: Auth', () => {
       const fakeUserModel = {
         findOne: sinon.stub()
       };
-      fakeUserModel.findOne.resolves({ email: user.email, password: 'aFakeHashedPassword' });
+      fakeUserModel.findOne.resolves({
+        email: user.email,
+        password: 'aFakeHashedPassword'
+      });
       const authService = new AuthService(fakeUserModel);
       const response = await authService.authenticate(user);
 

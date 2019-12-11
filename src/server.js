@@ -1,4 +1,4 @@
-import setupApp from "./app";
+import setupApp from './app';
 const port = 3000;
 
 (async () => {
@@ -8,7 +8,7 @@ const port = 3000;
       console.info(`app running on port ${port}`)
     );
 
-    const exitSignals = ["SIGINT", "SIGTERM", "SIGQUIT"];
+    const exitSignals = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
     exitSignals.map(sig =>
       process.on(sig, () =>
         server.close(err => {
@@ -17,7 +17,7 @@ const port = 3000;
             process.exit(1);
           }
           app.database.connection.close(function() {
-            console.info("Database connection closed!");
+            console.info('Database connection closed!');
             process.exit(0);
           });
         })

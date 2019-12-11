@@ -28,10 +28,9 @@ describe('Routes: Users', () => {
 
   describe('GET /users', () => {
     it('should return a list of users', done => {
-
       request
         .get('/users')
-        .set({'x-access-token': authToken})
+        .set({ 'x-access-token': authToken })
         .end((err, res) => {
           expect(res.body).to.eql([expectedAdminUser]);
           done(err);
@@ -40,10 +39,9 @@ describe('Routes: Users', () => {
 
     context('when an id is specified', done => {
       it('should return 200 with one user', done => {
-
         request
           .get(`/users/${defaultId}`)
-          .set({'x-access-token': authToken})
+          .set({ 'x-access-token': authToken })
           .end((err, res) => {
             expect(res.statusCode).to.eql(200);
             expect(res.body).to.eql([expectedAdminUser]);
@@ -57,7 +55,11 @@ describe('Routes: Users', () => {
     context('when posting an user', () => {
       it('should return a new user with status code 201', done => {
         const customId = '56cb91bdc3464f14678934ba';
-        const newUser = Object.assign({}, { _id: customId, __v: 0 }, defaultAdmin);
+        const newUser = Object.assign(
+          {},
+          { _id: customId, __v: 0 },
+          defaultAdmin
+        );
         const expectedSavedUser = {
           _id: customId,
           name: 'Jhon Doe',
@@ -67,7 +69,7 @@ describe('Routes: Users', () => {
 
         request
           .post('/users')
-          .set({'x-access-token': authToken})
+          .set({ 'x-access-token': authToken })
           .send(newUser)
           .end((err, res) => {
             expect(res.statusCode).to.eql(201);
@@ -88,7 +90,7 @@ describe('Routes: Users', () => {
 
         request
           .put(`/users/${defaultId}`)
-          .set({'x-access-token': authToken})
+          .set({ 'x-access-token': authToken })
           .send(updatedUser)
           .end((err, res) => {
             expect(res.status).to.eql(200);
@@ -101,10 +103,9 @@ describe('Routes: Users', () => {
   describe('DELETE /users/:id', () => {
     context('when deleting an user', () => {
       it('should delete an user and return 204 as status code', done => {
-
         request
           .delete(`/users/${defaultId}`)
-          .set({'x-access-token': authToken})
+          .set({ 'x-access-token': authToken })
           .end((err, res) => {
             expect(res.status).to.eql(204);
             done(err);
@@ -115,7 +116,6 @@ describe('Routes: Users', () => {
 
   context('when authenticating an user', () => {
     it('should generate a valid token', done => {
-
       request
         .post(`/users/authenticate`)
         .send({
@@ -130,7 +130,6 @@ describe('Routes: Users', () => {
     });
 
     it('should return unauthorized when the password does not match', done => {
-
       request
         .post(`/users/authenticate`)
         .send({
@@ -143,6 +142,4 @@ describe('Routes: Users', () => {
         });
     });
   });
-
-
 });

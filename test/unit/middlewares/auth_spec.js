@@ -28,10 +28,9 @@ describe('AuthMiddleware', () => {
 
   it('should call next middleware if theres no token', done => {
     const reqFake = {
-        headers: {}
+      headers: {}
     };
     const resFake = {};
     authMiddleware(reqFake, resFake, done);
   });
-
 });

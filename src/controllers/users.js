@@ -1,6 +1,3 @@
-import jwt from 'jsonwebtoken';
-import config from 'config';
-import bcrypt from 'bcrypt';
 
 class UsersController {
   constructor(User, AuthService) {
@@ -72,7 +69,7 @@ class UsersController {
   async authenticate(req, res) {
     const authService = new this.AuthService(this.User);
     const user = await authService.authenticate(req.body);
-    if(!user) {
+    if (!user) {
       return res.sendStatus(401);
     }
     const token = this.AuthService.generateToken({

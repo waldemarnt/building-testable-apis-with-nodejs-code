@@ -199,7 +199,7 @@ describe('Controller: Products', () => {
   });
 
   describe('delete() product', () => {
-    it('should respond with 204 when the product has been deleted', async() => {
+    it('should respond with 204 when the product has been deleted', async () => {
       const fakeId = 'a-fake-id';
       const request = {
         params: {
@@ -225,7 +225,7 @@ describe('Controller: Products', () => {
     });
 
     context('when an error occurs', () => {
-      it('should return 400', async() => {
+      it('should return 400', async () => {
         const fakeId = 'a-fake-id';
         const request = {
           params: {

@@ -8,9 +8,9 @@ class Auth {
   }
 
   async authenticate(data) {
-    const user = await this.User.findOne({email: data.email});
+    const user = await this.User.findOne({ email: data.email });
 
-    if(!user || !(await bcrypt.compare(data.password, user.password))) {
+    if (!user || !(await bcrypt.compare(data.password, user.password))) {
       return false;
     }
 

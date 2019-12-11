@@ -270,26 +270,32 @@ describe('Controller: Users', () => {
         ...user,
         password: bcrypt.hashSync(user.password, 10)
       };
-      const jwtToken = jwt.sign(userWithEncryptedPassword,
-        config.get('auth.key'),{
+      const jwtToken = jwt.sign(
+        userWithEncryptedPassword,
+        config.get('auth.key'),
+        {
           expiresIn: config.get('auth.tokenExpiresIn')
-        });
+        }
+      );
       class FakeAuthService {
         authenticate() {
-          return Promise.resolve(userWithEncryptedPassword)
+          return Promise.resolve(userWithEncryptedPassword);
         }
 
         static generateToken() {
           return jwtToken;
         }
-      };
+      }
       const fakeReq = {
         body: user
       };
       const fakeRes = {
         send: sinon.spy()
       };
-      const usersController = new UsersController(fakeUserModel, FakeAuthService);
+      const usersController = new UsersController(
+        fakeUserModel,
+        FakeAuthService
+      );
       await usersController.authenticate(fakeReq, fakeRes);
       sinon.assert.calledWith(fakeRes.send, { token: jwtToken });
     });
@@ -298,9 +304,9 @@ describe('Controller: Users', () => {
       const fakeUserModel = {};
       class FakeAuthService {
         authenticate() {
-          return Promise.resolve(false)
+          return Promise.resolve(false);
         }
-      };
+      }
       const user = {
         name: 'Jhon Doe',
         email: 'jhondoe@mail.com',
@@ -313,7 +319,10 @@ describe('Controller: Users', () => {
       const fakeRes = {
         sendStatus: sinon.spy()
       };
-      const usersController = new UsersController(fakeUserModel, FakeAuthService);
+      const usersController = new UsersController(
+        fakeUserModel,
+        FakeAuthService
+      );
 
       await usersController.authenticate(fakeReq, fakeRes);
       sinon.assert.calledWith(fakeRes.sendStatus, 401);

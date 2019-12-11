@@ -17,13 +17,13 @@ schema.pre('save', async function(next) {
   try {
     const hashedPassword = await hashAsync(this.password, 10);
     this.password = hashedPassword;
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 });
 
 schema.set('toJSON', {
-  transform: (doc, ret, options) => ({
+  transform: (doc, ret) => ({
     _id: ret._id,
     email: ret.email,
     name: ret.name,
