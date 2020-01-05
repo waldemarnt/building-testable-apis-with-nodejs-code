@@ -4,28 +4,41 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node ./server.js",
-    "test": "npm run test:unit && npm run test:integration",
+    "build": "babel src --out-dir dist",
+    "start": "npm run build && node dist/server.js",
+    "start:dev": "babel-node src/server.js",
     "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
-    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js"
+    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "lint": "eslint src --ext .js",
+    "lint:fix": "eslint src --fix --ext .js",
+    "prettier:list": "prettier --check 'src/**/*.js'",
+    "prettier:fix": "prettier --write 'src/**/*.js'",
+    "style:fix": "npm run lint:fix & npm run prettier:fix"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-node6": "^11.0.0",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "sinon": "^2.2.0",
-    "supertest": "^2.0.1"
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "babel-eslint": "^10.0.3",
+    "chai": "^4.2.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-node": "^10.0.0",
+    "mocha": "^6.2.2",
+    "prettier": "^1.19.1",
+    "sinon": "^7.5.0",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
-    "bcrypt": "^2.0.1",
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.15.2",
     "config": "^1.29.4",
     "express": "^4.14.0",
     "express-acl": "^2.0.2",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "^4.8.0"
+    "mongoose": "^5.7.13"
   }
 }

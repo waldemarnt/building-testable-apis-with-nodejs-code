@@ -7,15 +7,14 @@ class Auth {
     this.User = User;
   }
 
-  authenticate(data) {
-    return this.User.findOne({ email: data.email })
-      .then(user => {
-        if (!user) {
-          return false;
-        }
-        return bcrypt.compare(data.password, user.password)
-          .then(res => res ? user : false)
-      });
+  async authenticate(data) {
+    const user = await this.User.findOne({ email: data.email });
+
+    if (!user || !(await bcrypt.compare(data.password, user.password))) {
+      return false;
+    }
+
+    return user;
   }
 
   static generateToken(payload) {

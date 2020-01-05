@@ -10,20 +10,20 @@ const schema = new mongoose.Schema({
   role: String
 });
 
-schema.pre('save', function(next) {
-  if(!this.password || !this.isModified('password')) {
+schema.pre('save', async function(next) {
+  if (!this.password || !this.isModified('password')) {
     return next();
-  };
-  hashAsync(this.password, 10)
-    .then(hashedPassword => {
-      this.password = hashedPassword;
-      next();
-    })
-    .catch(err => next(err));
+  }
+  try {
+    const hashedPassword = await hashAsync(this.password, 10);
+    this.password = hashedPassword;
+  } catch (err) {
+    next(err);
+  }
 });
 
 schema.set('toJSON', {
-  transform: (doc, ret, options) => ({
+  transform: (doc, ret) => ({
     _id: ret._id,
     email: ret.email,
     name: ret.name,
