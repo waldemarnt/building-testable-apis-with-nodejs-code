@@ -1,4 +1,3 @@
-
 class UsersController {
   constructor(User, AuthService) {
     this.User = User;
