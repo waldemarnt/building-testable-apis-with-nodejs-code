@@ -35,7 +35,7 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.15.2",
-    "config": "^1.29.4",
+    "config": "^3.3.8",
     "express": "^4.14.0",
     "express-acl": "^2.0.2",
     "jsonwebtoken": "^8.3.0",
